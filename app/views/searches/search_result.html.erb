@@ -1,0 +1,11 @@
+<div class='container'>
+  <div class='row'>
+    <% if @range == "User" %>
+      <h2>Users search for "<%= @word %>"</h2>
+      <%= render 'users/index',users: @users %>
+    <% else %>
+      <h2>Books search for "<%= @word %>"</h2>
+      <%= render 'books/index',books: @books %>
+    <% end %>
+  </div>
+</div>
