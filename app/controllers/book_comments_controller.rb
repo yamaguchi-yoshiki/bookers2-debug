@@ -6,15 +6,14 @@ class BookCommentsController < ApplicationController
     @book_comment = current_user.book_comments.new(book_comment_params)
     @book_comment.book_id = @book.id
     if @book_comment.save
-      redirect_to book_path(@book), notice: "You have created book successfully."
     else
       redirect_to book_path(@book), notice: "comment can't be blank"
     end
   end
 
   def destroy
+    @book = Book.find(params[:book_id])
     BookComment.find(params[:id]).destroy
-    redirect_to book_path(params[:book_id])
   end
 
   private
@@ -27,7 +26,7 @@ class BookCommentsController < ApplicationController
     @book_comment = BookComment.find(params[:id])
     @user = @book_comment.user
     unless @user == current_user
-      redirect_to book_path(params[:book_id])
+      redirect_to book_path(@book_comment.book)
     end
   end
 end
