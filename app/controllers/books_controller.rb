@@ -8,7 +8,7 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all
+    @books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
     @book = Book.new
   end
 
@@ -17,7 +17,7 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
-      @books = Book.all
+      @books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
       render 'index'
     end
   end
@@ -38,7 +38,7 @@ class BooksController < ApplicationController
   def destroy
     @book = Book.find(params[:id])
     @book.destroy
-    redirect_to books_path
+    redirect_to books_path, notice: "You have destroyed book successfully."
   end
 
   private
