@@ -3,8 +3,26 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @user = @book.user
     @new_book = Book.new
     @book_comment = BookComment.new
+    @current_user_entry = Entry.where(user_id: current_user.id)
+    @user_entry = Entry.where(user_id: @user.id)
+
+    unless @user == current_user
+      @current_user_entry.each do |cu|
+        @user_entry.each do |u|
+          if cu.room_id == u.room_id
+            @have_room = true
+            @room = cu.room_id
+          end
+        end
+      end
+      unless @have_room
+        @room = Room.new
+        @entry = Entry.new
+      end
+    end
   end
 
   def index
@@ -38,7 +56,7 @@ class BooksController < ApplicationController
   def destroy
     @book = Book.find(params[:id])
     @book.destroy
-    redirect_to books_path, notice: "You have destroyed book successfully."
+    redirect_to books_path, alert: "You have destroyed book successfully."
   end
 
   private

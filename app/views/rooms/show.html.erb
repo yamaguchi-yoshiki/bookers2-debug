@@ -1,0 +1,38 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-8 offset-md-2'>
+      <h2>
+        <% @entries.each do |e| %>
+          <% unless e.user == current_user %> <%= e.user.name %> さん<% end %>
+    	  <% end %>
+    	  とのチャット
+    	 </h2>
+    	<table class="table mx-auto">
+  	    <thead>
+  	      <tr>
+  	        <th></th>
+  	        <th>messages</th>
+    	    </tr>
+    	  </thead>
+  	    <tbody>
+  	      <% @messages.each do |message| %>
+    	    <tr>
+    	      <td>
+  	          <%= image_tag message.user.get_profile_image, size: '50x50' %><br>
+              <%= message.user.name %>
+  	         </td>
+  	        <td><%= message.content %></td>
+    	    </tr>
+    	    <% end %>
+  	    </tbody>
+    	</table>
+    	<%= form_with model: @message, local: true do |f| %>
+    	  <div class="form-group mr-">
+    	    <%= f.text_field :content, class: 'form-control', placeholder: "メッセージを入力" %>
+    	  </div>
+    	  <%= f.hidden_field :room_id, value: @room.id %>
+        <% f.submit %>
+    	<% end %>
+    </div>
+  </div>
+</div>
