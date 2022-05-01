@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :correct_user, only: [:edit, :update, :destroy]
+  impressionist
 
   def show
     @book = Book.find(params[:id])
@@ -9,6 +10,7 @@ class BooksController < ApplicationController
     @current_user_entry = Entry.where(user_id: current_user.id)
     @user_entry = Entry.where(user_id: @user.id)
 
+    # DM機能
     unless @user == current_user
       @current_user_entry.each do |cu|
         @user_entry.each do |u|
@@ -26,7 +28,9 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
+    @new_books = Book.all
+    @favorite_books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
+    @view_books = Book.order(impressions_count: 'DESC')
     @book = Book.new
   end
 
