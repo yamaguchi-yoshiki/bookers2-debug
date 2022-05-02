@@ -7,10 +7,10 @@ class BooksController < ApplicationController
     @user = @book.user
     @new_book = Book.new
     @book_comment = BookComment.new
+    # DM機能
     @current_user_entry = Entry.where(user_id: current_user.id)
     @user_entry = Entry.where(user_id: @user.id)
 
-    # DM機能
     unless @user == current_user
       @current_user_entry.each do |cu|
         @user_entry.each do |u|
@@ -28,10 +28,8 @@ class BooksController < ApplicationController
   end
 
   def index
-    @new_books = Book.all
-    @favorite_books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
-    @view_books = Book.order(impressions_count: 'DESC')
     @book = Book.new
+    @books = Book.all
   end
 
   def create
@@ -61,6 +59,18 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
     @book.destroy
     redirect_to books_path, alert: "You have destroyed book successfully."
+  end
+
+  def sort
+    @book = Book.new
+    case params[:sort_books]
+    when "view"
+      @books = Book.order(impressions_count: 'DESC')
+    when "favorite"
+      @books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
+    else # new
+      @books = Book.all
+    end
   end
 
   private

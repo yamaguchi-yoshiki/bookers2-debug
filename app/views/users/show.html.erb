@@ -9,6 +9,61 @@
     <div class='col-md-8 offset-md-1'>
       <h2>Books</h2>
       <%= render 'books/index',books: @books %>
+      <h4 class="mt-3">投稿数の前日比、先週比</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>今日の投稿数</th>
+            <th>前日の投稿数</th>
+            <th>前日比</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= @today_book.count %></td>
+            <td><%= @yesterday_book.count %></td>
+            <td>
+              <% if @the_day_before %>
+                <%= @the_day_before.round %>%
+              <% else %>
+                前日の投稿はありません
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-bordered pr-5">
+        <thead>
+          <tr>
+            <th>今週の投稿数</th>
+            <th>先週の投稿数</th>
+            <th>先週比</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= @this_week_book.count %></td>
+            <td><%= @last_week_book.count %></td>
+            <td>
+              <% if @the_week_before %>
+                <%= @the_week_before.round %>%
+              <% else %>
+                先週の投稿はありません
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h5>投稿数記録</h5>
+      <%= form_with url: user_search_path(@user), local: false, method: :get do |f| %>
+        <%= f.date_field :created_at %>
+        <%= f.submit "検索", class: "btn btn-primary" %>
+      <% end %>
+      <div id="created_count">
+        <% if @created_book.present? %>
+          <%= render 'search', created_book: @created_book %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

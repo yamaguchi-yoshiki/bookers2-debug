@@ -9,7 +9,13 @@
     </div>
     <div class='col-md-8 offset-md-1'>
       <h2>Books</h2>
-      <%= render 'index', books: @favorite_books %>
+      <%= form_with url: sort_path, local: false, method: :get do |f| %>
+        <%= f.select :sort_books, [["新着順(Default)", "new"], ["閲覧数順", "view"], ["いいね順", "favorite"]] %>
+        <%= f.submit "sort", class: "btn btn-secondary text-white" %>
+      <% end %>
+      <div id="books_index">
+        <%= render 'index', books: @books %>
+      </div>
     </div>
   </div>
 </div>

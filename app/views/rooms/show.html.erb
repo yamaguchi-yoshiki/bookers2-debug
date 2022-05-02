@@ -17,7 +17,7 @@
         <thead>
           <tr>
             <th></th>
-            <th>messages--------------------</th>
+            <th class="text-center">－　Messages　－</th>
             <th></th>
           </tr>
         </thead>
@@ -26,16 +26,16 @@
             <tr>
               <% if message.user == current_user %>
                 <td>
-                  <%= image_tag message.user.get_profile_image, size: '100x100' %><br>
+                  <%= image_tag message.user.get_profile_image, size: '50x50', class: "mx-auto" %><br>
                   あなた
                 </td>
-                <td class="text-success"><%= message.content %></td>
+                <td class="table-success"><%= message.content %></td>
                 <td></td>
               <% else %>
                 <td></td>
                 <td><%= message.content %></td>
                 <td>
-                  <%= image_tag message.user.get_profile_image, size: '100x100' %><br>
+                  <%= image_tag message.user.get_profile_image, size: '50x50', class: "mx-auto" %><br>
                   <%= message.user.name %>
                 </td>
               <% end %>

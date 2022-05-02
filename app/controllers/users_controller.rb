@@ -5,9 +5,26 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books
     @book = Book.new
+
+    # 投稿数
+    @today_book = @books.created_today
+    @yesterday_book = @books.created_yesterday
+    if @yesterday_book.count == 0
+      @the_day_before = false
+    else
+      @the_day_before = @today_book.count / @yesterday_book.count.to_f * 100
+    end
+    @this_week_book = @books.created_this_week
+    @last_week_book = @books.created_last_week
+    if @last_week_book.count == 0
+      @the_week_before = false
+    else
+      @the_week_before = @this_week_book.count / @last_week_book.count.to_f * 100
+    end
+
+    # DM機能
     @current_user_entry = Entry.where(user_id: current_user.id)
     @user_entry = Entry.where(user_id: @user.id)
-
     unless @user == current_user
       @current_user_entry.each do |cu|
         @user_entry.each do |u|
@@ -39,6 +56,18 @@ class UsersController < ApplicationController
       redirect_to user_path(@user), notice: "You have updated user successfully."
     else
       render :edit
+    end
+  end
+
+  def search
+    @user = User.find(params[:user_id])
+    @books = @user.books
+    @book = Book.new
+    if params[:created_at] == ""
+      @created_book = "日付を選択してください"
+    else
+      create_at = params[:created_at]
+      @created_book = @books.where(["created_at LIKE ? ", "#{create_at}%"]).count
     end
   end
 
