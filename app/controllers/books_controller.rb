@@ -37,7 +37,7 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
-      @books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
+      @books = Book.all
       render 'index'
     end
   end
@@ -67,7 +67,9 @@ class BooksController < ApplicationController
     when "view"
       @books = Book.order(impressions_count: 'DESC')
     when "favorite"
-      @books = Book.all.sort { |a, b| b.favorites.count <=> a.favorites.count }
+      @books = Book.all.sort { |a, b| b.favorites.size <=> a.favorites.size }
+    when "favorite_this_week"
+      @books = Book.all.sort { |a, b| b.favorites.created_this_week.size <=> a.favorites.created_this_week.size }
     else # new
       @books = Book.all
     end
