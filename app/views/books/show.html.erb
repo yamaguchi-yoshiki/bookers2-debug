@@ -12,16 +12,25 @@
   		  <tr>
           <td>
             <%= link_to(@book.user) do %>
-              <%= image_tag @book.user.get_profile_image, size:"100x100" %><br>
-              <%= @book.user.name %>
+              <%= image_tag @book.user.get_profile_image, size:"100x100" %>
             <% end %>
           </td>
           <td><%= link_to @book.title, @book %></td>
-          <td><%= @book.body %></td>
+          <td colspan="3"><%= @book.body %></td>
+          <td colspan="2"><%= render "books/static_rate", book: @book %></td>
+        </tr>
+        <tr>
+          <td>
+            <%= link_to(@book.user) do %>
+              <%= @book.user.name %>
+            <% end %>
+          </td>
+          <td></td>
           <td id="favorite_buttons_<%= @book.id %>">
             <%= render "favorites/favorite", book: @book %>
           </td>
           <td>コメント数:<%= @book.book_comments.count %></td>
+
           <td>閲覧数:<%= @book.impressions_count %></td>
           <% if @book.user == current_user %>
             <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success edit_book_#{@book.id}" %></td>

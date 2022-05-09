@@ -7,23 +7,30 @@
     <%= f.label :opinion %>
     <%= f.text_area :body, class: 'form-control book_body' %>
   </div>
-  <div id="rating-form">
-    <label>rate:</label>
-    <%= f.hidden_field :rate, :value => 'score' %>
+  <div class="form-group">
+    <%= f.label :rate %>
+    <% if book.id === nil %>
+      <div id="rating-form">
+        <%= f.hidden_field :rate, id: :review_star %>
+      </div>
+      <script>
+        $(document).on("turbolinks:load",function(){
+          $('#rating-form').empty();
+          $('#rating-form').raty({
+            size: 36,
+            starOff: "<%= asset_path('star-off.png') %>",
+            starOn: "<%= asset_path('star-on.png') %>",
+            starHalf: "<%= asset_path('star-half.png') %>",
+            scoreName: 'book[rate]',
+            half: true
+          });
+        });
+      </script>
+      <% else %>
+        <%= render "books/static_rate", book: book %>
+      <% end %>
   </div>
   <div class="form-group">
     <%= f.submit class: 'btn btn-success' %>
   </div>
 <% end %>
-<script>
-  $(document).on("turbolinks:load",function({
-    $('#rating-form').raty({
-      size: 36,
-      starOff: "<%= asset_path('star-off.png') %>",
-      starOn: "<%= asset_path('star-on.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      scoreName: 'book[rate]',
-      half: true
-    });
-  });
-</script>
