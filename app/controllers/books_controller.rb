@@ -70,7 +70,7 @@ class BooksController < ApplicationController
       @books = Book.all.sort { |a, b| b.favorites.size <=> a.favorites.size }
     when "favorite_this_week"
       @books = Book.all.sort { |a, b| b.favorites.created_this_week.size <=> a.favorites.created_this_week.size }
-    else # new
+    else # default(new
       @books = Book.all
     end
   end
